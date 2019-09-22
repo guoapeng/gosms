@@ -21,7 +21,7 @@ func (this *AcsClient) GetResponse(queryString *QueryString, body RequestBody) (
 	if serverAddr, err := this.TargetServer.GetUrl(); err == nil {
 		qs := queryString.String()
 		signature := this.SignatureBuilder.BuildSignature(qs)
-		urlstr := serverAddr + "/?Signature=" + url.QueryEscape(signature) + delimeter + qs
+		urlstr := serverAddr + "/?Signature=" + url.QueryEscape(signature) + DELIMETER + qs
 		if req, err := http.NewRequest(queryString.MethodType, urlstr, body.Reader); err == nil {
 			log.Println("urlstr ", urlstr)
 			if resp, err := this.HttpClient.Do(req); err == nil {
@@ -29,15 +29,15 @@ func (this *AcsClient) GetResponse(queryString *QueryString, body RequestBody) (
 				if response, err := this.processResponse(resp); err == nil {
 					return response, nil
 				} else {
-					log.Fatal("AliSmsSender processResponse error.", err)
+					log.Println("AliSmsSender processResponse error.", err)
 					return nil, err
 				}
 			} else {
-				log.Fatal("http get error.", err)
+				log.Println("http get error.", err)
 				return nil, err
 			}
 		} else {
-			log.Fatal("http NewRequest error.", err)
+			log.Println("http NewRequest error.", err)
 			return nil, err
 		}
 	} else {
@@ -50,8 +50,8 @@ type SignatureBuilder struct {
 }
 
 func (this *SignatureBuilder) BuildSignature(signString string) string {
-	singstr := signLinaJie + url.QueryEscape(signString)
-	signature := this.hmac4Go(singstr, this.Credential.AccessSecret+delimeter)
+	singstr := SIGN_PREFIX + url.QueryEscape(signString)
+	signature := this.hmac4Go(singstr, this.Credential.AccessSecret+DELIMETER)
 	return signature
 }
 
@@ -66,14 +66,14 @@ func (this *SignatureBuilder) hmac4Go(name, sk string) string {
 func (this *AcsClient) processResponse(resp *http.Response) (*Response, error) {
 	bodys, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("http readAll body error ", err)
+		log.Println("http readAll body error ", err)
 		return nil, err
 	}
 	var msg Response
 	if len(bodys) > 0 {
 		err = json.Unmarshal(bodys, &msg)
 		if err != nil {
-			log.Fatal("http unmarshal json body error ", err)
+			log.Println("http unmarshal json body error ", err)
 			return nil, err
 		}
 	}
