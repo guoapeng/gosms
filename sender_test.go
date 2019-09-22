@@ -4,6 +4,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/suite"
 	"gosms"
+	"log"
 	"testing"
 )
 
@@ -28,5 +29,19 @@ func (suite *GoSMSSenderSuite) TestSend() {
 		suite.Assertions.Equal("OK", response.Code )
 	} else {
 		suite.Fail("failed to send message with error", err)
+	}
+}
+
+
+func (suite *GoSMSSenderSuite) TestSend2() {
+	msgJSON := `{code:"1234"}`
+	if response, err := suite.sender.Send("13288888888", msgJSON, "SMS_9999999"); err ==nil {
+		if "OK" == response.Code {
+			log.Println("sent message successfully and get response ",response)
+		} else {
+			log.Println("sent message with issue ",response)
+		}
+	} else {
+		log.Fatal("failed to send message with error", err)
 	}
 }
