@@ -1,4 +1,8 @@
+由于没有注意到ali官方发布到新版的golang sdk for SMS service
+快实现完成完成了才发现, 索性把它实现完成,只是没有补充足够的测试.
+相比官方sdk, 个人认为实现要比官方版简洁,调用优雅, 可扩展性强于官方版.
 
+description:
 golang version short message sender underline with ali sms service
 
 ## Installation
@@ -11,7 +15,7 @@ $ go get -u github.com/guoapeng/gosms
 ## Quick Examples
 Before you begin, you need to sign up for an Alibaba Cloud account and retrieve your [Credentials](https://usercenter.console.aliyun.com/#/manage/ak).
 
-### Create sender
+### Create sender and send short message
 ```go
 package main
 

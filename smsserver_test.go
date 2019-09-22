@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/suite"
-	"gosms"
+	"github.com/guoapeng/gosms"
 	"reflect"
 	"testing"
 )
