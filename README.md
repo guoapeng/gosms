@@ -5,6 +5,9 @@
 description:
 golang version short message sender underline with ali sms service
 
+Prerequisite:
+install golang 1.12 or later
+
 ## Installation
 Use `go get` to install SDK
 
@@ -19,21 +22,27 @@ Before you begin, you need to sign up for an Alibaba Cloud account and retrieve 
 ```go
 package main
 
-import "github.com/guoapeng/gosms"
+import ("github.com/guoapeng/gosms"
+  "log"
+)
+
 
 func main() {
 
+    //replace the accessKeyId, AccessSecret and SignName only you know
 	sender := gosms.NewSender("your_accessKeyId", "your_AccessSecret", "your_SignName")
     
 	msgJSON := `{code:"1234"}`           
-	if response, err := sender.Send("13288888888", msgJSON, "SMS_9999999"); err ==nil {  // SMS_9999999 is message template id defined in aliyun's sms service
+	// replace 13288888888 with valid phone number recognizable by aliyun SMS service
+	// replace SMS_9999999 with message template id defined by you in aliyun's sms service
+	if response, err := sender.Send("13288888888", msgJSON, "SMS_9999999"); err ==nil {  
 		if "OK" == response.Code {
 			log.Println("sent message successfully and get response ",response)
 		} else {
 			log.Println("sent message with issue ",response)
 		}
 	} else {
-		log.Fatal("failed to send message with error", err)
+		log.Println("failed to send message with error", err)
 	}
 }
 ```
