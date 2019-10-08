@@ -17,16 +17,16 @@ type AcsClient struct {
 	HttpClient   *http.Client
 }
 
-func (this *AcsClient) GetResponse(queryString *QueryString, body RequestBody) (*Response, error) {
-	if serverAddr, err := this.TargetServer.GetUrl(); err == nil {
+func (p *AcsClient) GetResponse(queryString *QueryString, body RequestBody) (*Response, error) {
+	if serverAddr, err := p.TargetServer.GetUrl(); err == nil {
 		qs := queryString.String()
-		signature := this.SignatureBuilder.BuildSignature(qs)
-		urlstr := serverAddr + "/?Signature=" + url.QueryEscape(signature) + DELIMETER + qs
+		signature := p.SignatureBuilder.BuildSignature(qs)
+		urlstr := serverAddr + "/?Signature=" + url.QueryEscape(signature) + DELIMITER + qs
 		if req, err := http.NewRequest(queryString.MethodType, urlstr, body.Reader); err == nil {
 			log.Println("urlstr ", urlstr)
-			if resp, err := this.HttpClient.Do(req); err == nil {
+			if resp, err := p.HttpClient.Do(req); err == nil {
 				defer resp.Body.Close()
-				if response, err := this.processResponse(resp); err == nil {
+				if response, err := p.processResponse(resp); err == nil {
 					return response, nil
 				} else {
 					log.Println("AliSmsSender processResponse error.", err)
@@ -49,13 +49,13 @@ type SignatureBuilder struct {
 	Credential Credential
 }
 
-func (this *SignatureBuilder) BuildSignature(signString string) string {
-	singstr := SIGN_PREFIX + url.QueryEscape(signString)
-	signature := this.hmac4Go(singstr, this.Credential.AccessSecret+DELIMETER)
+func (p *SignatureBuilder) BuildSignature(signString string) string {
+	singstr := SignPrefix + url.QueryEscape(signString)
+	signature := p.hmac4Go(singstr, p.Credential.AccessSecret+DELIMITER)
 	return signature
 }
 
-func (this *SignatureBuilder) hmac4Go(name, sk string) string {
+func (p *SignatureBuilder) hmac4Go(name, sk string) string {
 	mac := hmac.New(sha1.New, []byte(sk))
 	mac.Write([]byte(name))
 	encodeString := base64.StdEncoding.EncodeToString(mac.Sum(nil))
@@ -63,7 +63,7 @@ func (this *SignatureBuilder) hmac4Go(name, sk string) string {
 }
 
 
-func (this *AcsClient) processResponse(resp *http.Response) (*Response, error) {
+func (p *AcsClient) processResponse(resp *http.Response) (*Response, error) {
 	bodys, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Println("http readAll body error ", err)

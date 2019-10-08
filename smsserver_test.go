@@ -3,8 +3,8 @@ package gosms_test
 import (
 	"errors"
 	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/suite"
 	"github.com/guoapeng/gosms"
+	"github.com/stretchr/testify/suite"
 	"reflect"
 	"testing"
 )

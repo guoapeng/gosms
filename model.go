@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	DELIMETER   = "&"
-	SIGN_PREFIX = "GET&%2F&"
+	DELIMITER  = "&"
+	SignPrefix = "GET&%2F&"
 )
 
 
@@ -85,81 +85,81 @@ func NewRequest( profile Profile, signatureNonce string, action Action) *QuerySt
 		Version: action.ApiVersion}
 }
 
-func (this *QueryString) String() string {
+func (p *QueryString) String() string {
 	buf := bytes.Buffer{}
-	buf.WriteString(this.getAccessKeyId())
-	buf.WriteString(this.getAction())
-	buf.WriteString(this.getFormat())
-	buf.WriteString(this.getOutId())
-	buf.WriteString(this.getPhoneNumbers())
-	buf.WriteString(this.getRegionId())
-	buf.WriteString(this.getSignName())
-	buf.WriteString(this.getSignatureMethod())
-	buf.WriteString(this.getSignatureNonce())
-	buf.WriteString(this.getSignatureVersion())
-	buf.WriteString(this.getTemplateCode())
-	buf.WriteString(this.getTemplateParam())
-	buf.WriteString(this.getTimestamp())
-	buf.WriteString(this.getVersion())
+	buf.WriteString(p.getAccessKeyId())
+	buf.WriteString(p.getAction())
+	buf.WriteString(p.getFormat())
+	buf.WriteString(p.getOutId())
+	buf.WriteString(p.getPhoneNumbers())
+	buf.WriteString(p.getRegionId())
+	buf.WriteString(p.getSignName())
+	buf.WriteString(p.getSignatureMethod())
+	buf.WriteString(p.getSignatureNonce())
+	buf.WriteString(p.getSignatureVersion())
+	buf.WriteString(p.getTemplateCode())
+	buf.WriteString(p.getTemplateParam())
+	buf.WriteString(p.getTimestamp())
+	buf.WriteString(p.getVersion())
 	signString := buf.String()
 	return signString
 }
 
-func (this *QueryString) getAccessKeyId() string {
-	return "AccessKeyId=" + this.AccessKeyId
+func (p *QueryString) getAccessKeyId() string {
+	return "AccessKeyId=" + p.AccessKeyId
 }
 
-func (this *QueryString) getOutId() string {
-	return "&OutId=" + this.OutId
+func (p *QueryString) getOutId() string {
+	return "&OutId=" + p.OutId
 }
 
-func (this *QueryString) getFormat() string {
-	return "&Format=" + this.Format
+func (p *QueryString) getFormat() string {
+	return "&Format=" + p.Format
 }
 
-func (this *QueryString) getAction() string {
-	return "&Action=" + this.Action
+func (p *QueryString) getAction() string {
+	return "&Action=" + p.Action
 }
 
-func (this *QueryString) getSignatureNonce() string {
-	return "&SignatureNonce=" + this.SignatureNonce
+func (p *QueryString) getSignatureNonce() string {
+	return "&SignatureNonce=" + p.SignatureNonce
 }
 
-func (this *QueryString) getSignatureMethod() string {
-	return "&SignatureMethod=" + this.SignatureMethod
+func (p *QueryString) getSignatureMethod() string {
+	return "&SignatureMethod=" + p.SignatureMethod
 }
 
-func (this *QueryString) getSignName() string {
-	return "&SignName=" + url.QueryEscape(this.SignName)
+func (p *QueryString) getSignName() string {
+	return "&SignName=" + url.QueryEscape(p.SignName)
 }
 
-func (this *QueryString) getRegionId() string {
-	return "&RegionId=" + this.RegionId
+func (p *QueryString) getRegionId() string {
+	return "&RegionId=" + p.RegionId
 }
 
-func (this *QueryString) getPhoneNumbers() string {
-	return "&PhoneNumbers=" + this.PhoneNumbers
+func (p *QueryString) getPhoneNumbers() string {
+	return "&PhoneNumbers=" + p.PhoneNumbers
 }
 
-func (this *QueryString) getTemplateParam() string {
-	return "&TemplateParam=" + url.QueryEscape(this.TemplateParam)
+func (p *QueryString) getTemplateParam() string {
+	return "&TemplateParam=" + url.QueryEscape(p.TemplateParam)
 }
 
-func (this *QueryString) getTemplateCode() string {
-	return "&TemplateCode=" + this.TemplateCode
+func (p *QueryString) getTemplateCode() string {
+	return "&TemplateCode=" + p.TemplateCode
 }
 
-func (this *QueryString) getSignatureVersion() string {
-	return "&SignatureVersion="+this.SignatureVersion
+func (p *QueryString) getSignatureVersion() string {
+	return "&SignatureVersion="+ p.SignatureVersion
 }
 
-func (this *QueryString) getTimestamp() string {
+func (p *QueryString) getTimestamp() string {
 	var cstZone = time.FixedZone("GMT", 0)
 	keyTime := time.Now().In(cstZone).Format("2006-01-02T15:04:05Z")
 	timstapm := "&Timestamp=" + url.QueryEscape(keyTime)
 	return timstapm
 }
 
-func (this *QueryString) getVersion() string {
-	return "&Version="+this.Version
+func (p *QueryString) getVersion() string {
+	return "&Version="+ p.Version
 }

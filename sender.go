@@ -36,24 +36,24 @@ type SignNameProvider struct {
 	SignName string
 }
 
-func (this *AliSmsSender) Send(phone, msgJSON, templateCode string) (*Response, error) {
+func (p *AliSmsSender) Send(phone, msgJSON, templateCode string) (*Response, error) {
 	action := Action{Action: "SendSms",
 		ApiVersion: "2017-05-25",
 		RegionId:   "cn-hangzhou",
 		Msg: Message{PhoneNumbers: phone,
 			TemplateParam: msgJSON,
 			TemplateCode:  templateCode,
-			SignName:         this.SignNameProvider.SignName,
+			SignName:      p.SignNameProvider.SignName,
 			OutId:         satoriuuid.NewV4().String()}}
-	qs := this.buildQueryString(action)
-	return this.Client.GetResponse(qs, this.buildBody("send msg"))
+	qs := p.buildQueryString(action)
+	return p.Client.GetResponse(qs, p.buildBody("send msg"))
 }
 
-func (this *AliSmsSender) buildBody(content string) RequestBody {
+func (p *AliSmsSender) buildBody(content string) RequestBody {
 	return RequestBody{Reader: strings.NewReader(content)}
 }
 
-func (this *AliSmsSender) buildQueryString(action Action) *QueryString {
-	return NewRequest(this.Profile, satoriuuid.NewV4().String(), action)
+func (p *AliSmsSender) buildQueryString(action Action) *QueryString {
+	return NewRequest(p.Profile, satoriuuid.NewV4().String(), action)
 }
 
