@@ -1,7 +1,7 @@
 package gosms
 
 import (
-	"github.com/satori/go.uuid"
+	satoriuuid "github.com/satori/go.uuid"
 	"net/http"
 	"strings"
 )
@@ -44,7 +44,7 @@ func (this *AliSmsSender) Send(phone, msgJSON, templateCode string) (*Response, 
 			TemplateParam: msgJSON,
 			TemplateCode:  templateCode,
 			SignName:         this.SignNameProvider.SignName,
-			OutId:         uuid.NewV4().String()}}
+			OutId:         satoriuuid.NewV4().String()}}
 	qs := this.buildQueryString(action)
 	return this.Client.GetResponse(qs, this.buildBody("send msg"))
 }
@@ -54,6 +54,6 @@ func (this *AliSmsSender) buildBody(content string) RequestBody {
 }
 
 func (this *AliSmsSender) buildQueryString(action Action) *QueryString {
-	return NewRequest(this.Profile, uuid.NewV4().String(), action)
+	return NewRequest(this.Profile, satoriuuid.NewV4().String(), action)
 }
 
